@@ -18,6 +18,34 @@ def dummy_predictor(csv_file):
     _df_factor_return.index = _df_factor_return.index.map(lambda idx: datetime.strptime(idx,"%Y-%m-%d"))
     return _df_factor_return
 
+def information_ratio(df):
+    ret_ts = np.diff(df.as_matrix().reshape(df.shape[0]))
+    return np.mean(ret_ts)/np.std(ret_ts)*16.0
+
+def compare_predictors(config_pnl_df):
+    pnl_list = []
+    IR_dict = {}
+    for predictor in config_pnl_df.keys():
+        IR_dict[predictor] = information_ratio(config_pnl_df[predictor])
+        pnl_list.append(config_pnl_df[predictor].rename(columns={'pnl':predictor}))
+    return pd.Series(IR_dict), pd.concat(pnl_list, axis=1)
+
+config_pnl_df = {
+
+    "Markowitz": dummy_predictor("PNL/pnl_markowitz.csv"),
+    "MA5": dummy_predictor("PNL/pnl_MA5.csv"),
+    "multi-EMA": dummy_predictor("PNL/pnl_multi_ema.csv"),
+    "ARIMA": dummy_predictor("PNL/pnl_ARIMA.csv"),
+    "Holt Winters": dummy_predictor("PNL/pnl_HW.csv"),
+    "VAR": dummy_predictor("PNL/pnl_var.csv"),
+    "Simple RNN": dummy_predictor("PNL/pnl_simple_RNN.csv"),
+    "LSTM": dummy_predictor("PNL/pnl_lstm.csv"),
+    "GRU": dummy_predictor("PNL/pnl_gru.csv"),
+    "Simple RNN and MA5": dummy_predictor("PNL/pnl_simple_RNN_MA5.csv")
+
+}
+
+
 def main():
     view_config = {"MA5" : lambda df: FACTOR_EMA(df.shift(1).dropna(axis=0), 5),
                    "RNN": lambda df: dummy_predictor("Prediction/prediction_simple_RNN.csv")}
@@ -44,6 +72,14 @@ def main():
     pnl_ts = BLP(datetime(2006,5,1), datetime(2006,5,31))
     pnl_ts.to_csv('pnl_example.csv')
     print 'Example pnl', pnl_ts
+
+    print 'Other PNLs'
+
+    ir_df,pnl_df=compare_predictors(config_pnl_df)
+
+    print 'Information Ratio'
+    print ir_df
+    pnl_df.plot()
 
 if __name__ == "__main__":
     main()
