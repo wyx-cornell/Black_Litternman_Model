@@ -141,7 +141,7 @@ def BLP_accuracy_comparison(BLP, method1, method2, DATE_):
     return BLP.view(method1, DATE_)[1] - BLP.view(method2, DATE_)[1]
 
 
-def main():
+def example():
     def FACTOR_EMA(df, half_life):
         return pd.ewma(df, halflife=half_life)
 
@@ -188,6 +188,8 @@ def main():
     pnl_ts = BLP(datetime(2006,5,1), datetime(2006,5,31))
     pnl_ts.to_csv('pnl_example.csv')
     print 'Dummy pnl', pnl_ts
+
+#Other predictors:
 
 #    #GRU
 #    view_config = {"GRU": lambda df: dummy_predictor("Prediction/prediction_gru.csv")}
@@ -286,5 +288,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    example()
 
