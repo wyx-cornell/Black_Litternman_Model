@@ -222,7 +222,7 @@ def example():
 #    pnl_ts.to_csv('pnl_lstm.csv')
 
     #RNN combined with MA5
-#    view_config = {#"MA5" : lambda df: FACTOR_EMA(df.shift(1).dropna(axis=0), 5),
+#    view_config = {"MA5" : lambda df: FACTOR_EMA(df.shift(1).dropna(axis=0), 5),
 #                   "RNN": lambda df: dummy_predictor("Prediction/prediction_simple_RNN.csv")}
 #    DR_view = BLDR.view_data_reader("Data/factor_return_w_industry.csv", view_config,
 #                                    error_periods=60, error_method = "rolling_window")
