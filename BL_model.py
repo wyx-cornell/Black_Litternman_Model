@@ -185,9 +185,9 @@ def main():
 
     ret_blb, h_blb, TRADING_UNIVERSE = BLP.single_period(target_date)
 
-#    pnl_ts = BLP(datetime(2006,5,1), datetime(2015,12,31))
-#    pnl_ts.to_csv('pnl_new.csv')
-#    print 'Dummy pnl', pnl_ts
+    pnl_ts = BLP(datetime(2006,5,1), datetime(2006,5,31))
+    pnl_ts.to_csv('pnl_example.csv')
+    print 'Dummy pnl', pnl_ts
 
 #    #GRU
 #    view_config = {"GRU": lambda df: dummy_predictor("Prediction/prediction_gru.csv")}
@@ -235,6 +235,7 @@ def main():
 #    print 'MA5', pnl_ts
 #    pnl_ts.to_csv('pnl_simple_MA5.csv')
 
+    #Vectorized AR
 #    view_config = {"VAR": lambda df: dummy_predictor("Prediction/prediction_var.csv").iloc[100:].dropna(axis=0)}
 #    DR_view = BLDR.view_data_reader("Data/factor_return_w_industry.csv", view_config,
 #                                    error_periods=60, error_method = "rolling_window")
@@ -249,33 +250,35 @@ def main():
 #    print 'VAR', pnl_ts
 #    pnl_ts.to_csv('pnl_var.csv')
 
-    view_config = {"HW": lambda df: dummy_predictor("Prediction/view_HW_v2.csv").iloc[100:].dropna(axis=0)}
-    DR_view = BLDR.view_data_reader("Data/factor_return_w_industry.csv", view_config,
-                                    error_periods=60, error_method = "rolling_window")
-    data_reader_config = {'view': DR_view, #call method return estimation and standard error of each predictors
-        'factor_return': DR_factor_return, #call method return prior mean and covariance of factors
-        'residual': DR_residual,#call method return covariance of residuals
-        'factor_loading': DR_factor_loading #call method return factor loadings of each stock, also return the return of next B day for each stock
-        }
-    BLP = Black_Litterman_Portfolio(data_reader_config, 1, factor_diagonalized=False)
-    print BLP.view.methods
-    pnl_ts = BLP(datetime(2006,5,1), datetime(2015,12,31))
-    print 'HW', pnl_ts
-    pnl_ts.to_csv('pnl_HW_v2.csv')
+    #Holt Winters
+#    view_config = {"HW": lambda df: dummy_predictor("Prediction/view_HW_v2.csv").iloc[100:].dropna(axis=0)}
+#    DR_view = BLDR.view_data_reader("Data/factor_return_w_industry.csv", view_config,
+#                                    error_periods=60, error_method = "rolling_window")
+#    data_reader_config = {'view': DR_view, #call method return estimation and standard error of each predictors
+#        'factor_return': DR_factor_return, #call method return prior mean and covariance of factors
+#        'residual': DR_residual,#call method return covariance of residuals
+#        'factor_loading': DR_factor_loading #call method return factor loadings of each stock, also return the return of next B day for each stock
+#        }
+#    BLP = Black_Litterman_Portfolio(data_reader_config, 1, factor_diagonalized=False)
+#    print BLP.view.methods
+#    pnl_ts = BLP(datetime(2006,5,1), datetime(2015,12,31))
+#    print 'HW', pnl_ts
+#    pnl_ts.to_csv('pnl_HW_v2.csv')
 
-    view_config = {"ARIMA": lambda df: dummy_predictor("Prediction/view_ARIMA_v2.csv").iloc[100:].dropna(axis=0)}
-    DR_view = BLDR.view_data_reader("Data/factor_return_w_industry.csv", view_config,
-                                    error_periods=60, error_method = "rolling_window")
-    data_reader_config = {'view': DR_view, #call method return estimation and standard error of each predictors
-        'factor_return': DR_factor_return, #call method return prior mean and covariance of factors
-        'residual': DR_residual,#call method return covariance of residuals
-        'factor_loading': DR_factor_loading #call method return factor loadings of each stock, also return the return of next B day for each stock
-        }
-    BLP = Black_Litterman_Portfolio(data_reader_config, 1, factor_diagonalized=False)
-    print BLP.view.methods
-    pnl_ts = BLP(datetime(2006,5,1), datetime(2015,12,31))
-    print 'ARIMA', pnl_ts
-    pnl_ts.to_csv('pnl_ARIMA_v2.csv')
+    #ARIMA
+#    view_config = {"ARIMA": lambda df: dummy_predictor("Prediction/view_ARIMA_v2.csv").iloc[100:].dropna(axis=0)}
+#    DR_view = BLDR.view_data_reader("Data/factor_return_w_industry.csv", view_config,
+#                                    error_periods=60, error_method = "rolling_window")
+#    data_reader_config = {'view': DR_view, #call method return estimation and standard error of each predictors
+#        'factor_return': DR_factor_return, #call method return prior mean and covariance of factors
+#        'residual': DR_residual,#call method return covariance of residuals
+#        'factor_loading': DR_factor_loading #call method return factor loadings of each stock, also return the return of next B day for each stock
+#        }
+#    BLP = Black_Litterman_Portfolio(data_reader_config, 1, factor_diagonalized=False)
+#    print BLP.view.methods
+#    pnl_ts = BLP(datetime(2006,5,1), datetime(2015,12,31))
+#    print 'ARIMA', pnl_ts
+#    pnl_ts.to_csv('pnl_ARIMA_v2.csv')
 
     
 
